@@ -33,6 +33,9 @@
     <link href="{{ asset('https://unpkg.com/aos@2.3.1/dist/aos.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+
+    <link type="text/css" href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
+
 </head>
 
 <body class="layout-default">

@@ -17,6 +17,8 @@ class CreatePastYearsTable extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->text('file_name');
+            $table->text('file_dir');
             $table->foreignId('student_year_id')->constrained('student_years')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

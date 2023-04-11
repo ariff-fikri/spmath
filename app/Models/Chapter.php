@@ -19,4 +19,9 @@ class Chapter extends Model
     {
         return $this->belongsTo(StudentYear::class, 'student_year_id', 'id');
     }
+
+    public function chapter_files()
+    {
+        return $this->hasMany(ChapterFiles::class, 'chapter_id', 'id');
+    }
 }

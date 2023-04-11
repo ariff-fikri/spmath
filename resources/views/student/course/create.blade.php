@@ -10,52 +10,41 @@
 
 @section('content')
     <div class="container-fluid page__container">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-form__body card-body">
-                        <div class="form-group">
-                            <label for="fname">Title</label>
-                            <input id="fname" type="text" class="form-control" placeholder="Title goes here" value="">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="desc">Description</label>
-                            <textarea id="desc" rows="4" class="form-control" placeholder="Please enter a description"></textarea>
-                        </div>
-
-                    </div>
-                    <div class="card-body text-center">
-
-                        <button type="submit" class="btn btn-success">Save Changes</button>
-                    </div>
-
-                </div>
+        @if(Session::has('success'))
+            <div class="alert alert-soft-success d-flex" role="alert">
+                <i class="fa fa-check mr-3"></i>
+                <strong>{{ Session::get('success') }}</strong>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <!-- Lessons -->
+        @endif
+        <div class="row">
+            <div class="col-md-12">
+                <form action="{{ route('chapter.store') }}" method="POST">
+                    @csrf
+                    <div class="card">
+                        <div class="card-form__body card-body">
+                            <div class="form-group">
+                                <label for="category">Student Year:</label><br />
+                                <select id="category" name="student_year_id" class="custom-select w-auto">
+                                    <option value="4">Form 4</option>
+                                    <option value="5">Form 5</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="fname">Title</label>
+                                <input id="fname" name="name" type="text" class="form-control" placeholder="Title goes here" value="" required>
+                            </div>
 
-                    <div class="card-header card-header-large bg-light d-flex align-items-center">
+                            <div class="form-group">
+                                <label for="desc">Description</label>
+                                <textarea id="desc" name="description" rows="4" class="form-control" placeholder="Please enter a description"></textarea>
+                            </div>
 
-                        <h4 class="card-header__title">Lesson Images</h4>
-                    </div>
-
-                    <div class="card-body">
-                        <!-- Lessons -->
-                        <style>
-                            .dropzone {
-                                border: 1px solid rgb(192, 192, 192);
-                                color: rgb(192, 192, 192);
-                            }
-                        </style>
-
-                        <div class="form-group mb-3">
-                            <form action="/file-upload" class="dropzone" id="my-awesome-dropzone"></form>
                         </div>
-                        <button class="btn btn-primary btn-block">Update Video</button>
+                        <div class="card-body text-center">
+                            <button type="submit" class="btn btn-success">Save Changes</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
 

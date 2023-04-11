@@ -1,0 +1,20 @@
+.carousel-control-next,
+.carousel-control-prev {
+    filter: invert(100%);
+}
+
+.carousel .carousel-indicators li {
+    background-color: rgb(209, 209, 209);
+}
+
+.carousel .carousel-indicators li.active {
+    background-color: rgb(65, 63, 63);
+}
+
+.text-truncate-custom {
+    display: -webkit-box;
+    max-width: 200px;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

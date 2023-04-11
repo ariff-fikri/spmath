@@ -13,6 +13,8 @@ class PastYear extends Model
         'name',
         'description',
         'student_year_id',
+        'file_name',
+        'file_dir',
     ];
 
     public function student_year()

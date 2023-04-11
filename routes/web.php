@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PastYearController;
 use App\Http\Controllers\QuizController;
@@ -22,11 +22,18 @@ Auth::routes();
 // Dashboard
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
-// Course
-Route::get('/course', [CourseController::class, 'index'])->name('course.index');
-Route::get('/course/create', [CourseController::class, 'create'])->name('course.create');
-Route::get('/course/edit', [CourseController::class, 'edit'])->name('course.edit');
-Route::get('/course/show', [CourseController::class, 'show'])->name('course.show');
+// Chapter
+Route::get('/chapter', [ChapterController::class, 'index'])->name('chapter.index');
+Route::get('/chapter/create', [ChapterController::class, 'create'])->name('chapter.create');
+Route::post('/chapter/store', [ChapterController::class, 'store'])->name('chapter.store');
+Route::get('/chapter/edit/{chapter}', [ChapterController::class, 'edit'])->name('chapter.edit');
+Route::post('/chapter/edit/file/{chapter}', [ChapterController::class, 'file'])->name('chapter.file');
+Route::get('/chapter/read/file/{chapter}', [ChapterController::class, 'read_files'])->name('chapter.read_files');
+Route::post('/chapter/remove/file/{chapter}', [ChapterController::class, 'remove_files'])->name('chapter.remove_files');
+Route::post('/chapter/update/{chapter}', [ChapterController::class, 'update'])->name('chapter.update');
+Route::get('/chapter/show/{chapter}', [ChapterController::class, 'show'])->name('chapter.show');
+Route::get('/chapter/preview/{chapter}', [ChapterController::class, 'preview'])->name('chapter.preview');
+Route::get('/chapter/download/{chapter}', [ChapterController::class, 'download'])->name('chapter.download');
 
 // Past Year
 Route::get('/past-year', [PastYearController::class, 'index'])->name('past-year.index');
