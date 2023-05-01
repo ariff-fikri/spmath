@@ -56,7 +56,7 @@
                                         </g>
                                     </svg>
                                 </span>
-                                <span class="sidebar-menu-text">Take Quiz</span>
+                                <span class="sidebar-menu-text">SPM MCQ</span>
                             </a>
                         </li>
                     </ul>

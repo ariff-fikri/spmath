@@ -31,7 +31,7 @@
 
 </head>
 
-<body class="layout-login-centered-boxed">
+<body class="layout-login-centered-boxed" style="min-height:100%; background-attachment: fixed; background-repeat: no-repeat; background-size: cover; -moz-background-size: cover; background-image: linear-gradient(rgba(255, 255, 255, 0.975), rgba(255, 255, 255, 0.975)), url('{{ asset('assets/images/bg3.jpg') }}'); ">
 
     <div class="layout-login-centered-boxed__form">
         <div class="d-flex flex-column justify-content-center align-items-center mt-2 mb-4 navbar-light">

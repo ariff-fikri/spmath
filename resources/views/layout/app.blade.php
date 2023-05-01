@@ -41,7 +41,7 @@
 <body class="layout-default">
 
     <!-- Header Layout -->
-    <div class="mdk-header-layout js-mdk-header-layout">
+    <div class="mdk-header-layout js-mdk-header-layout" style="min-height:100%; background-attachment: fixed; background-repeat: no-repeat; background-size: cover; -moz-background-size: cover; background-image: linear-gradient(rgba(255, 255, 255, 0.975), rgba(255, 255, 255, 0.975)), url('{{ asset('assets/images/bg3.jpg') }}'); ">
 
         <!-- Header -->
         @include('layout.header')

@@ -6,6 +6,7 @@ use App\Models\Chapter;
 use App\Models\ChapterFiles;
 use App\Models\StudentYear;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Zip;
 
@@ -26,9 +27,30 @@ class ChapterController extends Controller
 
     public function store(Request $request)
     {
-        Chapter::create($request->all());
+        $check_chapters_exist = Chapter::where('name', $request->name)->first();
 
-        return redirect()->route('course.index')->with('success', 'Chapter has been stored.');
+        if (!$check_chapters_exist) {
+            $chapter = Chapter::create($request->all());
+        } else {
+            $chapter = $check_chapters_exist;
+        }
+
+        if ($request->hasFile('file')) {
+
+            foreach ($request->file('file') as $key => $file) {
+                $destination_path = 'chapter/' . $chapter->id ?? 0 . '/';
+                $file_name = $file->getClientOriginalName();
+                $file->storeAs($destination_path, $file_name);
+
+                ChapterFiles::create([
+                    'name' => $file_name,
+                    'file_dir' => $destination_path,
+                    'chapter_id' => $chapter->id,
+                ]);
+            }
+        }
+
+        return redirect()->route('chapter.index')->with('success', 'Chapter has been stored.');
     }
 
     public function show(Request $request, Chapter $chapter)

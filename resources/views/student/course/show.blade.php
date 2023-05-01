@@ -13,7 +13,7 @@
                 <a href="{{ route('chapter.download', $chapter->id) }}" class="btn btn-success mt-2">
                     Download e-Notes
                 </a>
-                <a href="#" class="btn btn-info mt-2">
+                <a href="{{ route('quiz.index') }}" class="btn btn-info mt-2">
                     Do Quiz
                 </a>
                 @if (auth()->user())
@@ -86,29 +86,35 @@
                     $('.indicator-div').empty();
                     $('.preview-div').empty();
 
+                    var count = 0;
+
                     if (response.chapter_files.length > 0) {
                         response.chapter_files.forEach((chapter_file, index) => {
-                            $('.preview-div').append(`
-                    <div class="carousel-item ${index == 0 ? 'active' : ''}">
-                        <img class="d-block w-100" src="${chapter_file.url}" alt="${chapter_file.name} slide">
-                    </div>
-                `);
 
-                            $('.indicator-div').append(`
-                    <li data-target="#carouselExampleIndicators" data-slide-to="${index}" class="${index == 0 ? 'active' : ''}"></li>
-                `);
+                            if (!chapter_file.name.includes(".pdf")) {
+                                $('.preview-div').append(`
+                                    <div class="carousel-item ${count == 0 ? 'active' : ''}">
+                                        <img class="d-block w-100" src="${chapter_file.url}" alt="${chapter_file.name} slide">
+                                    </div>
+                                `);
+
+                                $('.indicator-div').append(`
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="${count}" class="${count == 0 ? 'active' : ''}"></li>
+                                `);
+                                count++;
+                            }
                         });
                     } else {
                         $('.preview-div').append(`
-                <div class="carousel-item active text-center">
-                    <img class="d-block w-100" src="{{ asset('assets/images/empty-state/2.png') }}" style="opacity: 50%" alt="2 slide">
-                    <div class="card-header__title text-muted mt-5 mb-5"><span>No Images Available</span></div>
-                </div>
-            `);
+                            <div class="carousel-item active text-center">
+                                <img class="d-block w-100" src="{{ asset('assets/images/empty-state/2.png') }}" style="opacity: 50%" alt="2 slide">
+                                <div class="card-header__title text-muted mt-5 mb-5"><span>No Images Available</span></div>
+                            </div>
+                        `);
 
                         $('.indicator-div').append(`
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            `);
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        `);
                     }
                 }
             });
