@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePastYearsTable extends Migration
+class CreateQuizzesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreatePastYearsTable extends Migration
      */
     public function up()
     {
-        Schema::create('past_years', function (Blueprint $table) {
+        Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->enum('paper_type', [1, 2])->comment('1: paper_1, 2:paper_2');
-            $table->text('description')->nullable();
-            $table->text('file_name');
-            $table->text('file_dir');
+            $table->string('title');
             $table->foreignId('student_year_id')->constrained('student_years')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('chapter_id')->constrained('chapters')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreatePastYearsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('past_years');
+        Schema::dropIfExists('quizzes');
     }
 }

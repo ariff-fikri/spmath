@@ -40,4 +40,13 @@ Route::get('/past-year', [PastYearController::class, 'index'])->name('past-year.
 
 // Quiz
 Route::get('/quiz/index', [QuizController::class, 'index'])->name('quiz.index');
+Route::get('/quiz/show', [QuizController::class, 'show'])->name('quiz.show');
+Route::get('/quiz/create', [QuizController::class, 'create'])->name('quiz.create');
+Route::post('/quiz/store', [QuizController::class, 'store'])->name('quiz.store');
+Route::post('/quiz/update/{quiz}', [QuizController::class, 'update'])->name('quiz.update');
+Route::post('/quiz/update/question/{quiz_question}', [QuizController::class, 'update_question'])->name('quiz.update.question');
+Route::post('/quiz/question/store', [QuizController::class, 'question_store'])->name('quiz.question.store');
+Route::get('/quiz/create-after-submit/{quiz}', [QuizController::class, 'create_after_submit'])->name('quiz.create-after-submit');
+Route::get('/quiz/edit/{quiz}', [QuizController::class, 'edit'])->name('quiz.edit');
+Route::get('/quiz/edit/question/{quiz_question}', [QuizController::class, 'edit_question'])->name('quiz.edit.question');
 

@@ -18,6 +18,7 @@ class PastYearSeeder extends Seeder
             [
                 'name' => '2018',
                 'description' => 'Paper 1',
+                'paper_type' => '1',
                 'student_year_id' => 4,
                 'file_name' => '2018-paper-1.pdf',
                 'file_dir' => 'assets/docs/',
@@ -25,6 +26,7 @@ class PastYearSeeder extends Seeder
             [
                 'name' => '2018',
                 'description' => 'Paper 2',
+                'paper_type' => '2',
                 'student_year_id' => 5,
                 'file_name' => '2018-paper-2.pdf',
                 'file_dir' => 'assets/docs/',

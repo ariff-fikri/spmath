@@ -36,6 +36,7 @@
 
     <link type="text/css" href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
+    @stack('styles')
 </head>
 
 <body class="layout-default">
@@ -68,6 +69,8 @@
 
     </div>
     <!-- // END header-layout -->
+    <div id="modal-div"></div>
+
 
     <script src="{{ asset('https://unpkg.com/aos@2.3.1/dist/aos.js') }}"></script>
 
