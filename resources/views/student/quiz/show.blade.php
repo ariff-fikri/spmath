@@ -7,7 +7,7 @@
             <div>
                 @if (auth()->user())
                     <a href="{{ route('quiz.create') }}" class="btn btn-info">
-                        New Quiz
+                        Create Quiz
                     </a>
                 @endif
             </div>
