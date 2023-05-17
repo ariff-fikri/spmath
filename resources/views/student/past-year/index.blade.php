@@ -3,7 +3,14 @@
 @section('header')
     <div class="container-fluid page__heading-container">
         <div class="page__heading d-flex align-items-center justify-content-between">
-            <h1 class="m-0">Past Year Papers</h1>
+            <h1 class="m-0">{{ auth()->user() ? 'Manage' : '' }} Past Year Papers</h1>
+            <div>
+                @if (auth()->user())
+                    <a href="{{ route('past-year.create') }}" class="btn btn-info">
+                        Add Past Year Paper
+                    </a>
+                @endif
+            </div>
         </div>
     </div>
 @endsection

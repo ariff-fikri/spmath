@@ -4,9 +4,9 @@
     <div class="container-fluid page__heading-container">
         <div class="page__heading d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
             <div>
-                <h1 class="m-lg-0">Quiz</h1>
+                <h1 class="m-lg-0">SPM MCQ</h1>
                 <div class="d-inline-flex align-items-center">
-                    <i class="material-icons icon-16pt mr-1 text-muted">school</i> <a href="#" class="text-muted">{{ $quiz->title }}</a>
+                    <i class="material-icons icon-16pt mr-1 text-muted">school</i> <a href="#" class="text-muted">All subjects for training.</a>
                 </div>
             </div>
         </div>
@@ -21,12 +21,12 @@
             <div class="text-body">Your currently answered to <strong class="text-primary">5 correct</strong> questions. </div>
         </div> --}}
 
-        <form action="{{ route('quiz.submit_answer', $quiz->id) }}" method="POST" id="quiz-submit-form">
+        <form action="{{ route('quiz.submit_answer_mcq') }}" method="POST" id="quiz-submit-form">
             @csrf
             
             <div class="row">
                 <div class="col-md-8 tab-content" id="quizTabContent">
-                    @foreach ($quiz->quiz_questions as $key => $question)
+                    @foreach ($quiz_questions as $key => $question)
                         <div class="tab-pane fade show @once active @endonce" id="quiz-{{ $question->id }}" role="tabpanel" aria-labelledby="quiz-{{ $question->id }}-tab">
                             <div class="card">
                                 <div class="card-header">
@@ -83,7 +83,7 @@
 
                     <div class="list-group nav-item" role="presentation">
 
-                        @foreach ($quiz->quiz_questions as $key => $question)
+                        @foreach ($quiz_questions as $key => $question)
                             <a href="#" class="list-group-item nav-link @once active @endonce" id="quiz-{{ $question->id }}-tab" data-toggle="tab" data-target="#quiz-{{ $question->id }}" role="tab" type="button">
                                 <span class="media align-items-center">
                                     <span class="media-left mr-2">
@@ -109,7 +109,7 @@
             $('.nav-item > .active').next('a').trigger('click');
         });
 
-        quiz = @json($quiz);
+        quiz_questions = @json($quiz_questions);
 
         $('.submit').click(function () {
             console.log('masuk');
@@ -130,7 +130,7 @@
 
                     validation = true;
 
-                    quiz.quiz_questions.forEach(element => {
+                    quiz_questions.forEach(element => {
                         if (!$(`input[name='question[${element.id}]']:checked`).val()) {
                             validation = false;
                         }

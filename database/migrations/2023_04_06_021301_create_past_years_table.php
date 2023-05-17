@@ -18,8 +18,8 @@ class CreatePastYearsTable extends Migration
             $table->string('name');
             $table->enum('paper_type', [1, 2])->comment('1: paper_1, 2:paper_2');
             $table->text('description')->nullable();
-            $table->text('file_name');
-            $table->text('file_dir');
+            $table->text('file_name')->nullable();
+            $table->text('file_dir')->nullable();
             $table->foreignId('student_year_id')->constrained('student_years')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

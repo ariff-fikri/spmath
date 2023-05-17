@@ -37,13 +37,18 @@ Route::get('/chapter/download/{chapter}', [ChapterController::class, 'download']
 
 // Past Year
 Route::get('/past-year', [PastYearController::class, 'index'])->name('past-year.index');
+Route::get('/past-year/create', [PastYearController::class, 'create'])->name('past-year.create');
+Route::post('/past-year/store', [PastYearController::class, 'store'])->name('past-year.store');
 
 // Quiz
-Route::get('/quiz/index', [QuizController::class, 'index'])->name('quiz.index');
+Route::get('/quiz/index/{chapter}', [QuizController::class, 'index'])->name('quiz.index');
+Route::get('/quiz/spm_mcq', [QuizController::class, 'spm_mcq'])->name('quiz.spm_mcq');
 Route::get('/quiz/show', [QuizController::class, 'show'])->name('quiz.show');
 Route::get('/quiz/create', [QuizController::class, 'create'])->name('quiz.create');
 Route::post('/quiz/store', [QuizController::class, 'store'])->name('quiz.store');
 Route::post('/quiz/update/{quiz}', [QuizController::class, 'update'])->name('quiz.update');
+Route::post('/quiz/submit_answer/{quiz}', [QuizController::class, 'submit_answer'])->name('quiz.submit_answer');
+Route::post('/quiz/submit_answer_mcq', [QuizController::class, 'submit_answer_mcq'])->name('quiz.submit_answer_mcq');
 Route::post('/quiz/update/question/{quiz_question}', [QuizController::class, 'update_question'])->name('quiz.update.question');
 Route::post('/quiz/question/store', [QuizController::class, 'question_store'])->name('quiz.question.store');
 Route::get('/quiz/create-after-submit/{quiz}', [QuizController::class, 'create_after_submit'])->name('quiz.create-after-submit');

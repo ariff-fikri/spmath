@@ -34,6 +34,8 @@
 
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 
+    <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css " rel="stylesheet">
+
     <link type="text/css" href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
     @stack('styles')
@@ -54,6 +56,7 @@
                 <div class="mdk-drawer-layout__content page">
 
                     @yield('header')
+                    
                     @yield('content')
 
                 </div>
@@ -104,7 +107,7 @@
     <script src="{{ asset('assets/js/dropdown.js') }}"></script>
     <script src="{{ asset('assets/js/sidebar-mini.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
-
+    <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js "></script>
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
     @stack('js')

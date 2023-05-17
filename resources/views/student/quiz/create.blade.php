@@ -1,10 +1,5 @@
 @extends('layout.app')
 
-@push('styles')
-    <!-- Vendor CSS -->
-    {{-- <link rel="stylesheet" href="{{ asset('assets/css/nestable.css') }}"> --}}
-@endpush
-
 @section('header')
     <div class="container-fluid page__heading-container">
         <div
@@ -18,6 +13,18 @@
 
 @section('content')
     <div class="container-fluid page__container">
+        @if (Session::has('success'))
+            <div class="alert alert-soft-success d-flex" role="alert">
+                <i class="fa fa-check mr-3"></i>
+                <strong>{{ Session::get('success') }}</strong>
+            </div>
+        @endif
+        @if (Session::has('error'))
+            <div class="alert alert-soft-danger d-flex" role="alert">
+                <i class="fa fa-times mr-3"></i>
+                <strong>{{ Session::get('error') }}</strong>
+            </div>
+        @endif
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Quiz Details</h4>
@@ -64,11 +71,6 @@
 @endsection
 
 @push('js')
-    <!-- Vendor JS -->
-    {{-- <script src="{{ asset('assets/vendor/jquery.nestable.js') }}"></script>
-
-    <!-- Initialize -->
-    <script src="{{ asset('assets/js/nestable.js') }}"></script> --}}
 
     <script>
         var chapters = @json($chapters);
@@ -99,15 +101,5 @@
             var url = '';
             $('#modal-div').load(url);
         }
-
-        // window.onbeforeunload = function() {
-        //     return "Are you sure?";
-        // };
-
-        // window.onkeydown = function(event) {
-        //     if (event.keyCode === 116) {
-        //         window.location.reload();
-        //     }
-        // };
     </script>
 @endpush

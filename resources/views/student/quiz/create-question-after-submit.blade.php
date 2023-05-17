@@ -24,6 +24,12 @@
                 <strong>{{ Session::get('success') }}</strong>
             </div>
         @endif
+        @if (Session::has('error'))
+            <div class="alert alert-soft-danger d-flex" role="alert">
+                <i class="fa fa-times mr-3"></i>
+                <strong>{{ Session::get('error') }}</strong>
+            </div>
+        @endif
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Quiz Details</h4>
@@ -70,9 +76,6 @@
                     @foreach ($quiz->quiz_questions as $quiz_question)
                         <li class="list-group-item nestable-item">
                             <div class="media align-items-center">
-                                <div class="media-left">
-                                    <a href="#" class="btn btn-default nestable-handle"><i class="material-icons">menu</i></a>
-                                </div>
                                 <div class="media-body">
                                     {{ $quiz_question->title }}
                                 </div>

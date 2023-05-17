@@ -23,12 +23,12 @@ class QuizSeeder extends Seeder
             [
                 'title' => 'Quiz For Number Bases',
                 'student_year_id' => 4,
-                'chapter_id' => 1,
+                'chapter_id' => 2,
             ],
             [
                 'title' => 'Quiz For Matrices',
                 'student_year_id' => 5,
-                'chapter_id' => 1,
+                'chapter_id' => 3,
             ],
         ];
 

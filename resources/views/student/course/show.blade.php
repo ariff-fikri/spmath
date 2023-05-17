@@ -10,12 +10,15 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <a href="{{ route('chapter.download', $chapter->id) }}" class="btn btn-success mt-2">
-                    Download e-Notes
-                </a>
-                <a href="{{ route('quiz.index') }}" class="btn btn-info mt-2">
-                    Do Quiz
-                </a>
+
+                <a href="{{ route('chapter.download', $chapter->id) }}" class="btn btn-success mt-2 {{ $enotes_available ? '' : 'disabled' }}">
+                    {{ $enotes_available ? 'Download e-Notes' : 'No e-Notes Available' }}
+                </a> 
+
+                <a href="{{ route('quiz.index', $chapter->id) }}" class="btn btn-info mt-2 {{ $quiz_available ? '' : 'disabled' }}">
+                    {{ $quiz_available ? 'Do Quiz' : 'No Quiz Available' }}
+                </a> 
+                
                 @if (auth()->user())
                     <a href="{{ route('chapter.edit', $chapter->id) }}" class="btn btn-primary mt-2">
                         Edit Chapter

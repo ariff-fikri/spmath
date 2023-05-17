@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Chapter;
 use App\Models\ChapterFiles;
+use App\Models\Enote;
+use App\Models\Quiz;
 use App\Models\StudentYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -57,7 +59,11 @@ class ChapterController extends Controller
     {
         $chapter_files = ChapterFiles::where('chapter_id', $chapter->id)->get();
 
-        return view('student.course.show', compact('chapter', 'chapter_files'));
+        $quiz_available = Quiz::where('chapter_id', $chapter->id)->first();
+
+        $enotes_available = Enote::where('chapter_id', $chapter->id)->first();
+
+        return view('student.course.show', compact('chapter', 'chapter_files', 'quiz_available', 'enotes_available'));
     }
 
     public function preview(Request $request, Chapter $chapter)
