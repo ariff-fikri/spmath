@@ -115,6 +115,14 @@ class ChapterController extends Controller
             ]);
         }
 
+        if ($request->file('file')->getClientOriginalExtension() == 'pdf') {
+            Enote::create([
+                'name' => $file_name,
+                'description' => '',
+                'chapter_id' => $chapter->id,
+            ]);
+        }
+
         return response()->json(['success' => 'Files has been stored.']);
     }
 

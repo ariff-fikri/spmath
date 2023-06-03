@@ -204,7 +204,7 @@
 
         var myDropzone2 = new Dropzone("#my-awesome-dropzone2", {
             maxFilesize: 2,
-            acceptedFiles: ".jpeg,.jpg,.png,.pdf",
+            acceptedFiles: ".pdf,.zip",
             init: function () {
                 myDropzone2 = this;
 
