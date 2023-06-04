@@ -86,6 +86,7 @@ class QuizController extends Controller
         $request->session()->remove('quiz');
         $request->session()->remove('total_correct_answer');
         $request->session()->remove('total_questions');
+        $request->session()->remove('time');
 
         $total_correct_answer = 0;
         $total_questions = 0;
@@ -110,6 +111,7 @@ class QuizController extends Controller
 
         $request->session()->put('total_correct_answer', $total_correct_answer);
         $request->session()->put('total_questions', $total_questions);
+        $request->session()->put('time', $request->time);
 
         $quiz_result = (object)($request->session()->all());
         

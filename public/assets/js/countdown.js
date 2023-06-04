@@ -126,6 +126,8 @@
 
         this.el.innerHTML = '<div class="d-flex align-items-center">' + $days + $hours + $min + $sec + '</div>';
       }
+    }).on('update.countdown', function(event) {
+      console.log(event);
     });
   };
 

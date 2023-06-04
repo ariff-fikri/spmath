@@ -35,6 +35,12 @@
                 <span class="text-muted">
                     You score {{ $quiz_result->total_correct_answer }} / {{ $quiz_result->total_questions }} questions.
                 </span>
+                <br>
+                @if ($quiz_result->time)
+                    <span class="text-muted">
+                        Your time : {{ date('i:s', $quiz_result->time / 1000) }}
+                    </span>
+                @endif
             </div>
             <div class="media-right">
                 

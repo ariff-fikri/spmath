@@ -9,6 +9,8 @@
                     <i class="material-icons icon-16pt mr-1 text-muted">school</i> <a href="#" class="text-muted">All subjects for training.</a>
                 </div>
             </div>
+
+            <div id="countdown-timer" class="countdown sidebar-p-x" data-value="5" data-unit="second"></div>
         </div>
     </div>
 @endsection
@@ -24,6 +26,8 @@
         <form action="{{ route('quiz.submit_answer_mcq') }}" method="POST" id="quiz-submit-form">
             @csrf
             
+            <input type="hidden" id="time" name="time">
+
             <div class="row">
                 <div class="col-md-8 tab-content" id="quizTabContent">
                     @foreach ($quiz_questions as $key => $question)
@@ -104,7 +108,45 @@
 @endsection
 
 @push('js')
+    <script src="{{ asset('assets/vendor/moment.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/vendor/jquery.countdown.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('assets/js/countdown.js') }}"></script> --}}
     <script>
+        // Set the date we're counting down to
+        var oldDate = new Date();
+        var hour = oldDate.getMinutes();
+        var newDate = oldDate.setMinutes(hour + 10);
+        var countDownDate = newDate;
+        var start_time = new Date().getTime();
+
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+
+            // Get today's date and time
+            var now = new Date().getTime();
+                
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+                
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+            // Output the result in an element with id="demo"
+            $('.countdown').html(minutes + "m " + seconds + "s ");
+            $('#time').val(now - start_time);
+
+            console.log($('#time').val());
+                
+            // If the count down is over, write some text 
+            if (distance < 0) {
+                clearInterval(x);
+                $('.countdown').html('TIME OUT');
+            } 
+        }, 1000);
+        
         $('.continue').click(function () {
             $('.nav-item > .active').next('a').trigger('click');
         });
