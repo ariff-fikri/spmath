@@ -182,4 +182,17 @@ class ChapterController extends Controller
 
         return Zip::create(str_replace(' ', '-', $chapter->name) . '.zip', File::files(public_path($directory)));
     }
+
+    public function remove(Request $request, Chapter $chapter)
+    {
+        foreach ($chapter->chapter_files as $key => $chapter_file) {
+            if (file_exists(storage_path('app/public/' . $chapter_file->file_dir . '/' . $chapter_file->name))) {
+                unlink(storage_path('app/public/' . $chapter_file->file_dir . '/' . $chapter_file->name));
+            }
+        }
+
+        $chapter->delete();
+
+        return back()->with('success', 'Chapter has been deleted.');
+    }
 }

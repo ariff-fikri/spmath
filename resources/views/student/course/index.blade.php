@@ -37,7 +37,7 @@
                                 <div class="card card__course">
                                     <div class="card-header card-header-large card-header-dark bg-dark d-flex justify-content-center">
                                         <a class="card-header__title  justify-content-center align-self-center d-flex flex-column" href="student-course.html">
-                                            <span class="course__title">Chapter {{ $form_4_chapters->id ?? '' }}</span>
+                                            <span class="course__title">Chapter {{ $loop->iteration ?? '' }}</span>
                                             <span class="course__subtitle">{{ $form_4_chapters->name ?? '' }}</span>
                                         </a>
                                     </div>
@@ -50,6 +50,12 @@
                                                 <a href="{{ route('chapter.edit', $form_4_chapters->id) }}" class="btn btn-info">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
+                                                <a href="{{ route('chapter.remove', $form_4_chapters->id) }}" onclick="event.preventDefault(); document.getElementById('remove-chapter-form-{{ $form_4_chapters->id }}').submit();" class="btn btn-danger ml-2">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                                <form id="remove-chapter-form-{{ $form_4_chapters->id }}" action="{{ route('chapter.remove', $form_4_chapters->id) }}" method="POST" class="d-none">
+                                                    @csrf
+                                                </form>
                                             @endif
                                             <a href="{{ route('chapter.show', $form_4_chapters->id) }}" class="btn btn-primary ml-auto">Go to chapter <i class="fa fa-arrow-right"></i></a>
                                         </div>
@@ -72,7 +78,7 @@
                                         class="card-header card-header-large card-header-dark bg-dark d-flex justify-content-center">
                                         <a class="card-header__title  justify-content-center align-self-center d-flex flex-column"
                                             href="student-course.html">
-                                            <span class="course__title">Chapter {{ $form_5_chapters->id ?? '' }}</span>
+                                            <span class="course__title">Chapter {{ $loop->iteration ?? '' }}</span>
                                             <span class="course__subtitle">{{ $form_5_chapters->name ?? '' }}</span>
                                         </a>
                                     </div>
@@ -85,6 +91,12 @@
                                                 <a href="{{ route('chapter.edit', $form_5_chapters->id) }}" class="btn btn-info">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
+                                                <a href="{{ route('chapter.remove', $form_5_chapters->id) }}" onclick="event.preventDefault(); document.getElementById('remove-chapter-form-{{ $form_5_chapters->id }}').submit();" class="btn btn-danger ml-2">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                                <form id="remove-chapter-form-{{ $form_5_chapters->id }}" action="{{ route('chapter.remove', $form_5_chapters->id) }}" method="POST" class="d-none">
+                                                    @csrf
+                                                </form>
                                             @endif
                                             <a href="{{ route('chapter.show', $form_5_chapters->id) }}" class="btn btn-primary ml-auto">Go to chapter <i class="fa fa-arrow-right"></i></a>
                                         </div>

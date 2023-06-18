@@ -4,6 +4,7 @@ use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PastYearController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\SpmMcqController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -34,11 +35,13 @@ Route::post('/chapter/update/{chapter}', [ChapterController::class, 'update'])->
 Route::get('/chapter/show/{chapter}', [ChapterController::class, 'show'])->name('chapter.show');
 Route::get('/chapter/preview/{chapter}', [ChapterController::class, 'preview'])->name('chapter.preview');
 Route::get('/chapter/download/{chapter}', [ChapterController::class, 'download'])->name('chapter.download');
+Route::post('/chapter/remove/{chapter}', [ChapterController::class, 'remove'])->name('chapter.remove');
 
 // Past Year
 Route::get('/past-year', [PastYearController::class, 'index'])->name('past-year.index');
 Route::get('/past-year/create', [PastYearController::class, 'create'])->name('past-year.create');
 Route::post('/past-year/store', [PastYearController::class, 'store'])->name('past-year.store');
+Route::post('/past-year/remove/{past_year}', [PastYearController::class, 'remove'])->name('past-year.remove');
 
 // Quiz
 Route::get('/quiz/index/{chapter}', [QuizController::class, 'index'])->name('quiz.index');
@@ -54,4 +57,20 @@ Route::post('/quiz/question/store', [QuizController::class, 'question_store'])->
 Route::get('/quiz/create-after-submit/{quiz}', [QuizController::class, 'create_after_submit'])->name('quiz.create-after-submit');
 Route::get('/quiz/edit/{quiz}', [QuizController::class, 'edit'])->name('quiz.edit');
 Route::get('/quiz/edit/question/{quiz_question}', [QuizController::class, 'edit_question'])->name('quiz.edit.question');
+Route::post('/quiz/remove/{quiz}', [QuizController::class, 'remove'])->name('quiz.remove');
+
+// SPM MCQ
+Route::get('/spm_mcq/index/{spm_mcq}', [SpmMcqController::class, 'index'])->name('spm_mcq.index');
+Route::get('/spm_mcq/show', [SpmMcqController::class, 'show'])->name('spm_mcq.show');
+Route::get('/spm_mcq/create', [SpmMcqController::class, 'create'])->name('spm_mcq.create');
+Route::post('/spm_mcq/store', [SpmMcqController::class, 'store'])->name('spm_mcq.store');
+Route::post('/spm_mcq/update/{spm_mcq}', [SpmMcqController::class, 'update'])->name('spm_mcq.update');
+Route::post('/spm_mcq/submit_answer/{spm_mcq}', [SpmMcqController::class, 'submit_answer'])->name('spm_mcq.submit_answer');
+Route::post('/spm_mcq/submit_answer_mcq', [SpmMcqController::class, 'submit_answer_mcq'])->name('spm_mcq.submit_answer_mcq');
+Route::post('/spm_mcq/update/question/{spm_mcq_question}', [SpmMcqController::class, 'update_question'])->name('spm_mcq.update.question');
+Route::post('/spm_mcq/question/store', [SpmMcqController::class, 'question_store'])->name('spm_mcq.question.store');
+Route::get('/spm_mcq/create-after-submit/{spm_mcq}', [SpmMcqController::class, 'create_after_submit'])->name('spm_mcq.create-after-submit');
+Route::get('/spm_mcq/edit/{spm_mcq}', [SpmMcqController::class, 'edit'])->name('spm_mcq.edit');
+Route::get('/spm_mcq/edit/question/{spm_mcq_question}', [SpmMcqController::class, 'edit_question'])->name('spm_mcq.edit.question');
+Route::post('/spm_mcq/remove/{spm_mcq}', [SpmMcqController::class, 'remove'])->name('spm_mcq.remove');
 

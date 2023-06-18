@@ -18,6 +18,19 @@
 @section('content')
     <div class="container-fluid page__container">
 
+        @if (Session::has('success'))
+            <div class="alert alert-soft-success d-flex" role="alert">
+                <i class="fa fa-check mr-3"></i>
+                <strong>{{ Session::get('success') }}</strong>
+            </div>
+        @endif
+        @if (Session::has('error'))
+            <div class="alert alert-soft-danger d-flex" role="alert">
+                <i class="fa fa-times mr-3"></i>
+                <strong>{{ Session::get('error') }}</strong>
+            </div>
+        @endif
+
         <div class="card-header card-header-tabs-basic nav" role="tablist">
             <a href="#paper_1" class="active" data-toggle="tab" role="tab" aria-controls="paper_1" aria-selected="true">Paper 1</a>
             <a href="#paper_2" data-toggle="tab" role="tab" aria-controls="paper_2" aria-selected="false">Paper 2</a>
@@ -26,7 +39,7 @@
         <div class="card-body tab-content">
             <div class="tab-pane active show fade" id="paper_1">
                 <div class="row">
-                    @foreach ($past_years->where('paper_type', 1) as $past_year)
+                    @forelse ($past_years->where('paper_type', 1) as $past_year)
                         <div class="col-md-3">
                             <div class="card card__course">
                                 <div class="card-header card-header-large card-header-dark bg-dark d-flex justify-content-center">
@@ -40,18 +53,26 @@
                                         <strong>{{ $past_year->description ?? '' }}</strong><br />
                                     </div>
                                     <div class="d-flex align-items-center">
+                                        <a href="{{ route('past-year.remove', $past_year->id) }}" onclick="event.preventDefault(); document.getElementById('remove-past-year-form-{{ $past_year->id }}').submit();" class="btn btn-danger ml-2">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                        <form id="remove-past-year-form-{{ $past_year->id }}" action="{{ route('past-year.remove', $past_year->id) }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
                                         <a href="{{ asset($past_year->file_dir . $past_year->file_name) }}" download class="btn btn-primary ml-auto">Download <i class="fa fa-arrow-right"></i></a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        No file found
+                    @endforelse
                 </div>
             </div>
 
             <div class="tab-pane active fade" id="paper_2">
                 <div class="row">
-                    @foreach ($past_years->where('paper_type', 2) as $past_year)
+                    @forelse ($past_years->where('paper_type', 2) as $past_year)
                         <div class="col-md-3">
                             <div class="card card__course">
                                 <div class="card-header card-header-large card-header-dark bg-dark d-flex justify-content-center">
@@ -65,12 +86,20 @@
                                         <strong>{{ $past_year->description ?? '' }}</strong><br />
                                     </div>
                                     <div class="d-flex align-items-center">
+                                        <a href="{{ route('past-year.remove', $past_year->id) }}" onclick="event.preventDefault(); document.getElementById('remove-past-year-form-{{ $past_year->id }}').submit();" class="btn btn-danger ml-2">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                        <form id="remove-past-year-form-{{ $past_year->id }}" action="{{ route('past-year.remove', $past_year->id) }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
                                         <a href="{{ asset($past_year->file_dir . $past_year->file_name) }}" download class="btn btn-primary ml-auto">Download <i class="fa fa-arrow-right"></i></a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        No file found
+                    @endforelse
                 </div>
             </div>
         </div>

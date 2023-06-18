@@ -23,7 +23,7 @@ class PastYearController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
-        
+
         $past_year = PastYear::create($request->all());
 
         if ($request->hasFile('file')) {
@@ -41,5 +41,16 @@ class PastYearController extends Controller
         DB::commit();
 
         return redirect()->route('past-year.index')->with('success', 'Past Year Paper has been stored.');
+    }
+
+    public function remove(Request $request, PastYear $past_year)
+    {
+        if (file_exists(storage_path('app/public/' . $past_year->file_dir . '/' . $past_year->file_name))) {
+            unlink(storage_path('app/public/' . $past_year->file_dir . '/' . $past_year->file_name));
+        }
+
+        $past_year->delete();
+
+        return back()->with('success', 'Quiz has been deleted.');
     }
 }

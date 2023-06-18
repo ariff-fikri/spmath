@@ -19,5 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PastYearSeeder::class);
         $this->call(QuizSeeder::class);
         $this->call(QuizQuestionSeeder::class);
+        $this->call(SpmMcqSeeder::class);
+        $this->call(SpmMcqQuestionSeeder::class);
     }
 }

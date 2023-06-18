@@ -48,7 +48,7 @@
                         </li>
 
                         <li class="sidebar-menu-item">
-                            <a class="sidebar-menu-button" href="{{ route('quiz.spm_mcq') }}">
+                            <a class="sidebar-menu-button" href="{{ route('spm_mcq.show') }}">
                                 <span class="sidebar-menu-icon sidebar-menu-icon--left">
                                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 40 40" width="22" height="22">
                                         <g transform="matrix(1.6666666666666667,0,0,1.6666666666666667,0,0)">
@@ -95,6 +95,13 @@
                             <a class="sidebar-menu-button" href="{{ route('quiz.show') }}">
                                 <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dvr</i>
                                 <span class="sidebar-menu-text">Manage Quizzes</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="{{ route('spm_mcq.show') }}">
+                                <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dvr</i>
+                                <span class="sidebar-menu-text text-truncate">Manage SPM MCQ</span>
                             </a>
                         </li>
 

@@ -5,9 +5,9 @@
     <div class="container-fluid page__heading-container">
         <div class="page__heading d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
             <div>
-                <h1 class="m-lg-0">Quiz Result</h1>
+                <h1 class="m-lg-0">SPM MCQ Result</h1>
                 <div class="d-inline-flex align-items-center">
-                    <i class="material-icons icon-16pt mr-1 text-muted">school</i> <a href="#" class="text-muted">{{ isset($quiz) ? $quiz->title : 'SPM MCQ' }}</a>
+                    <i class="material-icons icon-16pt mr-1 text-muted">school</i> <a href="#" class="text-muted">SPM MCQ</a>
                 </div>
             <p class="text-muted"><i class="fa fa-check text-muted"></i> Submitted on {{ now()->toFormattedDateString() }}</p>
 
@@ -44,7 +44,7 @@
             </div>
             <div class="media-right">
                 
-                <a href="{{ isset($quiz) ? route('quiz.index', $quiz->chapter_id) : route('spm_mcq.index', $quiz->id) }}" class="btn btn-primary">Restart <i class="material-icons btn__icon--right">refresh</i></a>
+                <a href="{{ route('spm_mcq.index', $spm_mcq->id) }}" class="btn btn-primary">Restart <i class="material-icons btn__icon--right">refresh</i></a>
             </div>
         </div>
     </div>

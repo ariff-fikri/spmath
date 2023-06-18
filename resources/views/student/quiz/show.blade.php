@@ -53,6 +53,12 @@
                                             <a href="{{ route('quiz.edit', $quiz_form_4->id) }}" class="btn btn-info">
                                                 <i class="fa fa-edit"></i>
                                             </a>
+                                            <a href="{{ route('quiz.remove', $quiz_form_4->id) }}" onclick="event.preventDefault(); document.getElementById('remove-quiz-form-{{ $quiz_form_4->id }}').submit();" class="btn btn-danger ml-2">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                            <form id="remove-quiz-form-{{ $quiz_form_4->id }}" action="{{ route('quiz.remove', $quiz_form_4->id) }}" method="POST" class="d-none">
+                                                @csrf
+                                            </form>
                                         @endif
                                         <a href="{{ route('quiz.index', $quiz_form_4->chapter_id) }}" class="btn btn-primary ml-auto">Go to Quiz <i class="fa fa-arrow-right"></i></a>
                                     </div>
@@ -83,6 +89,12 @@
                                             <a href="{{ route('quiz.edit', $quiz_form_5->id) }}" class="btn btn-info">
                                                 <i class="fa fa-edit"></i>
                                             </a>
+                                            <a href="{{ route('quiz.remove', $quiz_form_5->id) }}" onclick="event.preventDefault(); document.getElementById('remove-quiz-form-{{ $quiz_form_5->id }}').submit();" class="btn btn-danger ml-2">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                            <form id="remove-quiz-form-{{ $quiz_form_5->id }}" action="{{ route('quiz.remove', $quiz_form_5->id) }}" method="POST" class="d-none">
+                                                @csrf
+                                            </form>
                                         @endif
                                         <a href="{{ route('quiz.index', $quiz_form_5->chapter_id) }}" class="btn btn-primary ml-auto">Go to Quiz <i class="fa fa-arrow-right"></i></a>
                                     </div>

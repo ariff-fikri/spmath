@@ -4,49 +4,50 @@ namespace App\Http\Controllers;
 
 use App\Models\Chapter;
 use App\Models\Quiz;
-use App\Models\QuizQuestion;
+use App\Models\SpmMcqQuestion;
+use App\Models\SpmMcq;
 use Illuminate\Http\Request;
 
-class QuizController extends Controller
+class SpmMcqController extends Controller
 {
-    public function index(Chapter $chapter)
+    public function index(SpmMcq $spm_mcq)
     {
-        $quiz = Quiz::where('chapter_id', $chapter->id)->with(['quiz_questions'])->first();
+        $spm_mcq = SpmMcq::where('id', $spm_mcq->id)->with('quiz_questions')->first();
 
-        return view('student.quiz.index', compact('quiz'));
+        return view('student.spm-mcq.index', compact('spm_mcq'));
     }
 
     public function spm_mcq()
     {
-        $quiz_questions = QuizQuestion::inRandomOrder()->limit(15)->get();
+        $quiz_questions = SpmMcqQuestion::inRandomOrder()->limit(15)->get();
 
-        return view('student.quiz.mcq', compact('quiz_questions'));
+        return view('student.spm-mcq.mcq', compact('quiz_questions'));
     }
 
     public function create()
     {
         $chapters = Chapter::all();
 
-        return view('student.quiz.create', compact('chapters'));
+        return view('student.spm-mcq.create', compact('chapters'));
     }
 
     public function store(Request $request)
     {
-        $quiz_check = Quiz::where('chapter_id', $request->chapter_id)->first();
+        $quiz_check = SpmMcq::where('title', $request->title)->first();
 
         if ($quiz_check) {
 
             return back()->with('error', 'Quiz for this chapter has already been submitted. Please try another chapter.');
         }
 
-        $quiz = Quiz::create($request->all());
+        $quiz = SpmMcq::create($request->all());
 
-        return redirect()->route('quiz.create-after-submit', $quiz->id)->with('success', 'Quiz has been stored. Please then enter your questions.');
+        return redirect()->route('spm_mcq.create-after-submit', $quiz->id)->with('success', 'Quiz has been stored. Please then enter your questions.');
     }
 
-    public function submit_answer(Request $request, Quiz $quiz)
+    public function submit_answer(Request $request, SpmMcq $spm_mcq)
     {
-        $request->session()->remove('quiz');
+        $request->session()->remove('spm_mcq');
         $request->session()->remove('total_correct_answer');
         $request->session()->remove('total_questions');
 
@@ -54,7 +55,7 @@ class QuizController extends Controller
         $total_questions = 0;
 
         foreach ($request->question as $key => $question) {
-            $quiz_question = QuizQuestion::where('id', $key)->first();
+            $quiz_question = SpmMcqQuestion::where('id', $key)->first();
 
             $request->session()->put('quiz.question_' . $key, (object)([
                 'input_answer' => $question,
@@ -80,7 +81,7 @@ class QuizController extends Controller
 
         // dd($quiz_result);
 
-        return view('student.quiz.result', compact('quiz', 'quiz_result'));
+        return view('student.spm-mcq.result', compact('spm_mcq', 'quiz_result'));
     }
 
     public function submit_answer_mcq(Request $request)
@@ -94,7 +95,7 @@ class QuizController extends Controller
         $total_questions = 0;
 
         foreach ($request->question as $key => $question) {
-            $quiz_question = QuizQuestion::where('id', $key)->first();
+            $quiz_question = SpmMcqQuestion::where('id', $key)->first();
 
             $request->session()->put('quiz.question_' . $key, (object)([
                 'input_answer' => $question,
@@ -121,71 +122,60 @@ class QuizController extends Controller
 
         // dd($quiz_result);
 
-        return view('student.quiz.result', compact('quiz_result'));
+        return view('student.spm-mcq.result', compact('quiz_result'));
     }
 
     public function edit(Request $request, $quiz)
     {
-        $quiz = Quiz::where('id', $quiz)->with('quiz_questions')->first();
+        $quiz = SpmMcq::where('id', $quiz)->with('quiz_questions')->first();
 
-        $chapters = Chapter::all();
-
-        return view('student.quiz.edit', compact('quiz', 'chapters'));
+        return view('student.spm-mcq.edit', compact('quiz'));
     }
 
-    public function update(Request $request, Quiz $quiz)
+    public function update(Request $request, SpmMcq $spm_mcq)
     {
-        $quiz_check = Quiz::where('chapter_id', $request->chapter_id)->whereNotIn('id', [$quiz->id])->first();
-
-        if ($quiz_check) {
-
-            return back()->with('error', 'Quiz for this chapter has already been submitted. Please try another chapter.');
-        }
-
-        $quiz = $quiz->update($request->all());
+        $spm_mcq = $spm_mcq->update($request->all());
 
         return back()->with('success', 'Quiz has been updated.');
     }
 
-    public function update_question(Request $request, QuizQuestion $quiz_question)
+    public function update_question(Request $request, SpmMcqQuestion $spm_mcq_question)
     {
-        $quiz_question = $quiz_question->update($request->all());
+        $spm_mcq_question = $spm_mcq_question->update($request->all());
 
         return back()->with('success', 'Quiz Question has been updated.');
     }
 
-    public function edit_question(Request $request, QuizQuestion $quiz_question)
+    public function edit_question(Request $request, SpmMcqQuestion $spm_mcq_question)
     {
-        $chapters = Chapter::all();
-
-        return view('student.quiz.edit-question', compact('quiz_question', 'chapters'));
+        return view('student.spm-mcq.edit-question', compact('spm_mcq_question'));
     }
 
     public function show()
     {
-        $quizzes = Quiz::all();
+        $quizzes = SpmMcq::all();
 
-        return view('student.quiz.show', compact('quizzes'));
+        return view('student.spm-mcq.show', compact('quizzes'));
     }
 
     public function create_after_submit(Request $request, $quiz)
     {
-        $quiz = Quiz::where('id', $quiz)->with('quiz_questions')->first();
+        $quiz = SpmMcq::where('id', $quiz)->with('quiz_questions')->first();
 
-        return view('student.quiz.create-question-after-submit', compact('quiz'));
+        return view('student.spm-mcq.create-question-after-submit', compact('quiz'));
     }
 
     public function question_store(Request $request)
     {
-        $quiz_question = QuizQuestion::create($request->all());
+        $quiz_question = SpmMcqQuestion::create($request->all());
 
         return back()->with('success', 'Quiz Question has been stored.');
     }
 
-    public function remove(Request $request, Quiz $quiz)
+    public function remove(Request $request, SpmMcq $spm_mcq)
     {
-        $quiz->delete();
+        $spm_mcq->delete();
 
-        return back()->with('success', 'Quiz has been deleted.');
+        return back()->with('success', 'SPM MCQ has been deleted.');
     }
 }
