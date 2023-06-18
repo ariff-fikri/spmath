@@ -53,12 +53,14 @@
                                         <strong>{{ $past_year->description ?? '' }}</strong><br />
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        <a href="{{ route('past-year.remove', $past_year->id) }}" onclick="event.preventDefault(); document.getElementById('remove-past-year-form-{{ $past_year->id }}').submit();" class="btn btn-danger ml-2">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                        <form id="remove-past-year-form-{{ $past_year->id }}" action="{{ route('past-year.remove', $past_year->id) }}" method="POST" class="d-none">
-                                            @csrf
-                                        </form>
+                                        @if (auth()->user())
+                                            <a href="{{ route('past-year.remove', $past_year->id) }}" onclick="event.preventDefault(); document.getElementById('remove-past-year-form-{{ $past_year->id }}').submit();" class="btn btn-danger ml-2">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                            <form id="remove-past-year-form-{{ $past_year->id }}" action="{{ route('past-year.remove', $past_year->id) }}" method="POST" class="d-none">
+                                                @csrf
+                                            </form>
+                                        @endif
                                         <a href="{{ asset($past_year->file_dir . $past_year->file_name) }}" download class="btn btn-primary ml-auto">Download <i class="fa fa-arrow-right"></i></a>
                                     </div>
                                 </div>
@@ -86,12 +88,14 @@
                                         <strong>{{ $past_year->description ?? '' }}</strong><br />
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        <a href="{{ route('past-year.remove', $past_year->id) }}" onclick="event.preventDefault(); document.getElementById('remove-past-year-form-{{ $past_year->id }}').submit();" class="btn btn-danger ml-2">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                        <form id="remove-past-year-form-{{ $past_year->id }}" action="{{ route('past-year.remove', $past_year->id) }}" method="POST" class="d-none">
-                                            @csrf
-                                        </form>
+                                        @if (auth()->user())
+                                            <a href="{{ route('past-year.remove', $past_year->id) }}" onclick="event.preventDefault(); document.getElementById('remove-past-year-form-{{ $past_year->id }}').submit();" class="btn btn-danger ml-2">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                            <form id="remove-past-year-form-{{ $past_year->id }}" action="{{ route('past-year.remove', $past_year->id) }}" method="POST" class="d-none">
+                                                @csrf
+                                            </form>
+                                        @endif
                                         <a href="{{ asset($past_year->file_dir . $past_year->file_name) }}" download class="btn btn-primary ml-auto">Download <i class="fa fa-arrow-right"></i></a>
                                     </div>
                                 </div>
