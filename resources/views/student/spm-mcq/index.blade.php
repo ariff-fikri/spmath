@@ -150,7 +150,9 @@
             $('.nav-item > .active').next('a').trigger('click');
         });
 
-        quiz_questions = @json($spm_mcq);
+        quiz = @json($spm_mcq);
+
+        console.log(quiz);
 
         $('.submit').click(function () {
             console.log('masuk');
@@ -171,7 +173,7 @@
 
                     validation = true;
 
-                    quiz_questions.forEach(element => {
+                    quiz.quiz_questions.forEach(element => {
                         if (!$(`input[name='question[${element.id}]']:checked`).val()) {
                             validation = false;
                         }

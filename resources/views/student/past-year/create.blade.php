@@ -73,7 +73,7 @@
                 <div class="form-group mb-3">
                     <form action="{{ route('past-year.store') }}" method="POST" class="dropzone" id="my-awesome-dropzone">
                         @csrf
-                        <div class="dz-message" data-dz-message><span>Drop Image Here to Upload</span></div>
+                        <div class="dz-message" data-dz-message><span>Drop PDF File Here to Upload</span></div>
                     </form>
                 </div>
 

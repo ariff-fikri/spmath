@@ -61,7 +61,7 @@
                                                 @csrf
                                             </form>
                                         @endif
-                                        <a href="{{ asset($past_year->file_dir . $past_year->file_name) }}" download class="btn btn-primary ml-auto">Download <i class="fa fa-arrow-right"></i></a>
+                                        <a href="{{ !str_contains($past_year->file_dir, 'assets') ? asset('storage/' . $past_year->file_dir . '/' . $past_year->file_name) : asset($past_year->file_dir . $past_year->file_name) }}" download class="btn btn-primary ml-auto">Download <i class="fa fa-arrow-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +96,7 @@
                                                 @csrf
                                             </form>
                                         @endif
-                                        <a href="{{ asset($past_year->file_dir . $past_year->file_name) }}" download class="btn btn-primary ml-auto">Download <i class="fa fa-arrow-right"></i></a>
+                                        <a href="{{ !str_contains($past_year->file_dir, 'assets') ? asset('storage/' . $past_year->file_dir . '/' . $past_year->file_name) : asset($past_year->file_dir . $past_year->file_name) }}" download class="btn btn-primary ml-auto">Download <i class="fa fa-arrow-right"></i></a>
                                     </div>
                                 </div>
                             </div>
