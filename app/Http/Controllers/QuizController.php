@@ -35,7 +35,6 @@ class QuizController extends Controller
         $quiz_check = Quiz::where('chapter_id', $request->chapter_id)->first();
 
         if ($quiz_check) {
-
             return back()->with('error', 'Quiz for this chapter has already been submitted. Please try another chapter.');
         }
 
@@ -56,7 +55,7 @@ class QuizController extends Controller
         foreach ($request->question as $key => $question) {
             $quiz_question = QuizQuestion::where('id', $key)->first();
 
-            $request->session()->put('quiz.question_'.$key, (object) ([
+            $request->session()->put('quiz.question_' . $key, (object) ([
                 'input_answer' => $question,
                 'input_answer_label' => $quiz_question->answer_label($question, $quiz_question->id),
                 'title' => $quiz_question->title,
@@ -66,7 +65,6 @@ class QuizController extends Controller
             ]));
 
             if ($question == $quiz_question->correct_answer) {
-
                 $total_correct_answer++;
             }
 
@@ -96,7 +94,7 @@ class QuizController extends Controller
         foreach ($request->question as $key => $question) {
             $quiz_question = QuizQuestion::where('id', $key)->first();
 
-            $request->session()->put('quiz.question_'.$key, (object) ([
+            $request->session()->put('quiz.question_' . $key, (object) ([
                 'input_answer' => $question,
                 'input_answer_label' => $quiz_question->answer_label($question, $quiz_question->id),
                 'title' => $quiz_question->title,
@@ -106,7 +104,6 @@ class QuizController extends Controller
             ]));
 
             if ($question == $quiz_question->correct_answer) {
-
                 $total_correct_answer++;
             }
 
@@ -138,7 +135,6 @@ class QuizController extends Controller
         $quiz_check = Quiz::where('chapter_id', $request->chapter_id)->whereNotIn('id', [$quiz->id])->first();
 
         if ($quiz_check) {
-
             return back()->with('error', 'Quiz for this chapter has already been submitted. Please try another chapter.');
         }
 
