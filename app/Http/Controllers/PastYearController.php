@@ -28,7 +28,7 @@ class PastYearController extends Controller
 
         if ($request->hasFile('file')) {
 
-            $destination_path = 'past-year/' . $past_year->id ?? 0 . '/';
+            $destination_path = 'past-year/'.$past_year->id ?? 0 .'/';
             $file_name = $request->file('file')->getClientOriginalName();
             $request->file('file')->storeAs($destination_path, $file_name);
 
@@ -45,8 +45,8 @@ class PastYearController extends Controller
 
     public function remove(Request $request, PastYear $past_year)
     {
-        if (file_exists(storage_path('app/public/' . $past_year->file_dir . '/' . $past_year->file_name))) {
-            unlink(storage_path('app/public/' . $past_year->file_dir . '/' . $past_year->file_name));
+        if (file_exists(storage_path('app/public/'.$past_year->file_dir.'/'.$past_year->file_name))) {
+            unlink(storage_path('app/public/'.$past_year->file_dir.'/'.$past_year->file_name));
         }
 
         $past_year->delete();

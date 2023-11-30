@@ -28,9 +28,9 @@ class QuizQuestion extends Model
     {
         if ($answer_bullet == 'a') {
             return self::where('id', $id)->first()->choice_a ?? '';
-        } else if ($answer_bullet == 'b') {
+        } elseif ($answer_bullet == 'b') {
             return self::where('id', $id)->first()->choice_b ?? '';
-        } else if ($answer_bullet == 'c') {
+        } elseif ($answer_bullet == 'c') {
             return self::where('id', $id)->first()->choice_c ?? '';
         } else {
             return self::where('id', $id)->first()->choice_d ?? '';

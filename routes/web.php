@@ -73,4 +73,3 @@ Route::get('/spm_mcq/create-after-submit/{spm_mcq}', [SpmMcqController::class, '
 Route::get('/spm_mcq/edit/{spm_mcq}', [SpmMcqController::class, 'edit'])->name('spm_mcq.edit');
 Route::get('/spm_mcq/edit/question/{spm_mcq_question}', [SpmMcqController::class, 'edit_question'])->name('spm_mcq.edit.question');
 Route::post('/spm_mcq/remove/{spm_mcq}', [SpmMcqController::class, 'remove'])->name('spm_mcq.remove');
-

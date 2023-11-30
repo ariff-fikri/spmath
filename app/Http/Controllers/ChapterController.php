@@ -8,7 +8,6 @@ use App\Models\Enote;
 use App\Models\Quiz;
 use App\Models\StudentYear;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Zip;
 
@@ -31,7 +30,7 @@ class ChapterController extends Controller
     {
         $check_chapters_exist = Chapter::where('name', $request->name)->first();
 
-        if (!$check_chapters_exist) {
+        if (! $check_chapters_exist) {
             $chapter = Chapter::create($request->all());
         } else {
             $chapter = $check_chapters_exist;
@@ -40,7 +39,7 @@ class ChapterController extends Controller
         if ($request->hasFile('file')) {
 
             foreach ($request->file('file') as $key => $file) {
-                $destination_path = 'chapter/' . $chapter->id ?? 0 . '/';
+                $destination_path = 'chapter/'.$chapter->id ?? 0 .'/';
                 $file_name = $file->getClientOriginalName();
                 $file->storeAs($destination_path, $file_name);
 
@@ -71,7 +70,7 @@ class ChapterController extends Controller
         $chapter_files = ChapterFiles::where('chapter_id', $chapter->id)->get();
 
         foreach ($chapter_files as $key => $chapter_file) {
-            $chapter_file->url = asset('storage/' . $chapter_file->file_dir . '/' . $chapter_file->name);
+            $chapter_file->url = asset('storage/'.$chapter_file->file_dir.'/'.$chapter_file->name);
         }
 
         return response()->json(['success' => 'Preview displayed.', 'chapter_files' => $chapter_files]);
@@ -93,7 +92,7 @@ class ChapterController extends Controller
 
     public function file(Request $request, Chapter $chapter)
     {
-        $destination_path = 'chapter/' . $chapter->id ?? 0 . '/';
+        $destination_path = 'chapter/'.$chapter->id ?? 0 .'/';
         $file_name = $request->file('file')->getClientOriginalName();
         $request->file('file')->storeAs($destination_path, $file_name);
 
@@ -128,9 +127,9 @@ class ChapterController extends Controller
 
     public function read_files(Request $request, Chapter $chapter)
     {
-        $directory = 'storage\\chapter\\' . $chapter->id ?? 0 . '\\';
+        $directory = 'storage\\chapter\\'.$chapter->id ?? 0 .'\\';
         $files_info = [];
-        $file_ext = array('png', 'jpg', 'jpeg', 'pdf');
+        $file_ext = ['png', 'jpg', 'jpeg', 'pdf'];
 
         if (file_exists(public_path($directory))) {
             foreach (File::allFiles(public_path($directory)) as $file) {
@@ -142,11 +141,11 @@ class ChapterController extends Controller
                     $sizeinMB = round($size / (1000 * 1024), 2);
 
                     if ($sizeinMB <= 2) {
-                        $files_info[] = array(
-                            "name" => $filename,
-                            "size" => $size,
-                            "path" => url($directory . '/' . $filename)
-                        );
+                        $files_info[] = [
+                            'name' => $filename,
+                            'size' => $size,
+                            'path' => url($directory.'/'.$filename),
+                        ];
                     }
                 }
             }
@@ -157,15 +156,15 @@ class ChapterController extends Controller
 
     public function remove_files(Request $request, Chapter $chapter)
     {
-        $destination_path = preg_split("#/#", $request->file_dir);
+        $destination_path = preg_split('#/#', $request->file_dir);
 
-        $chapter_file = ChapterFiles::where('chapter_id', $chapter->id)->where('name', $request->file_name)->where('file_dir', $destination_path[3] . '/' . $destination_path[5])->first();
+        $chapter_file = ChapterFiles::where('chapter_id', $chapter->id)->where('name', $request->file_name)->where('file_dir', $destination_path[3].'/'.$destination_path[5])->first();
 
         if ($chapter_file) {
 
-            if (file_exists(storage_path('app/public/' . $chapter_file->file_dir . '/' . $chapter_file->name))) {
+            if (file_exists(storage_path('app/public/'.$chapter_file->file_dir.'/'.$chapter_file->name))) {
 
-                unlink(storage_path('app/public/' . $chapter_file->file_dir . '/' . $chapter_file->name));
+                unlink(storage_path('app/public/'.$chapter_file->file_dir.'/'.$chapter_file->name));
             }
 
             $chapter_file->delete();
@@ -178,16 +177,16 @@ class ChapterController extends Controller
 
     public function download(Request $request, Chapter $chapter)
     {
-        $directory = 'storage\\chapter\\' . $chapter->id ?? 0 . '\\';
+        $directory = 'storage\\chapter\\'.$chapter->id ?? 0 .'\\';
 
-        return Zip::create(str_replace(' ', '-', $chapter->name) . '.zip', File::files(public_path($directory)));
+        return Zip::create(str_replace(' ', '-', $chapter->name).'.zip', File::files(public_path($directory)));
     }
 
     public function remove(Request $request, Chapter $chapter)
     {
         foreach ($chapter->chapter_files as $key => $chapter_file) {
-            if (file_exists(storage_path('app/public/' . $chapter_file->file_dir . '/' . $chapter_file->name))) {
-                unlink(storage_path('app/public/' . $chapter_file->file_dir . '/' . $chapter_file->name));
+            if (file_exists(storage_path('app/public/'.$chapter_file->file_dir.'/'.$chapter_file->name))) {
+                unlink(storage_path('app/public/'.$chapter_file->file_dir.'/'.$chapter_file->name));
             }
         }
 
