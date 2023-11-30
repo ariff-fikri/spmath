@@ -7,7 +7,6 @@ use Illuminate\Database\Seeder;
 
 class SpmMcqSeeder extends Seeder
 {
-
     public function run()
     {
         $quizzes = [
