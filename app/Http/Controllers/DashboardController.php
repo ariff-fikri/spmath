@@ -20,7 +20,6 @@ class DashboardController extends Controller
         $chapters = Chapter::with('studentYear')
             ->whereIn('student_year_id', [4, 5])
             ->orderBy('student_year_id')
-            ->limit(3)
             ->get();
 
         $chaptersForm4 = $chapters->where('studentYear.id', 4)->values();

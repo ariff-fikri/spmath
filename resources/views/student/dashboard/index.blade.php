@@ -4,7 +4,6 @@
     <div class="container-fluid page__heading-container">
         <div class="page__heading d-flex align-items-center justify-content-between">
             <h1 class="m-0">{{ auth()->user() ? 'Admin' : '' }} Dashboard</h1>
-            {{-- <a href="" class="btn btn-success ml-3">Go to Chapters <i class="material-icons">arrow_forward</i></a> --}}
         </div>
     </div>
 @endsection
@@ -19,11 +18,11 @@
                         <a class="card-header__title  justify-content-center align-self-center d-flex flex-column" href="student-course.html">
                             <span><img src="assets/images/logos/form-5.png" class="mb-1" style="width:34px;" alt="logo"></span>
                             <span class="course__title">Form 4</span>
-                            <span class="course__subtitle">{{ $chapters_count_form_4 }} Chapters</span>
+                            <span class="course__subtitle">{{ $chaptersCountForm4 }} Chapters</span>
                         </a>
                     </div>
                     <div class="p-3">
-                        @foreach ($chapters_form_4 as $key => $chapter)
+                        @foreach ($chaptersForm4 as $key => $chapter)
                             <div class="mb-2">
                                 <strong>{{ $chapter->name }}</strong><br />
                                 <small class="text-muted">Chapter {{ $chapter->id }}</small>
@@ -42,11 +41,11 @@
                         <a class="card-header__title  justify-content-center align-self-center d-flex flex-column" href="student-course.html">
                             <span><img src="assets/images/logos/form-5.png" class="mb-1" style="width:34px;" alt="logo"></span>
                             <span class="course__title">Form 5</span>
-                            <span class="course__subtitle">{{ $chapters_count_form_5 }} Chapters</span>
+                            <span class="course__subtitle">{{ $chaptersCountForm5 }} Chapters</span>
                         </a>
                     </div>
                     <div class="p-3">
-                        @foreach ($chapters_form_5 as $key => $chapter)
+                        @foreach ($chaptersForm5 as $key => $chapter)
                             <div class="mb-2">
                                 <strong>{{ $chapter->name }}</strong><br />
                                 <small class="text-muted">Chapter {{ $chapter->id }}</small>
