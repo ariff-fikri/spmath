@@ -7,13 +7,23 @@ use App\Models\ChapterFiles;
 use App\Models\Enote;
 use App\Models\Quiz;
 use App\Models\StudentYear;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Zip;
+use Illuminate\Support\Facades\Storage;
+use STS\ZipStream\ZipStream;
+use STS\ZipStream\ZipStreamFacade;
 
 class ChapterController extends Controller
 {
-    public function index()
+    /**
+     * Display the index page for student courses, showing a list of student years and associated chapters.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function index(): View
     {
         $student_year = StudentYear::all();
         $chapters = Chapter::get()->groupBy('student_year_id');
@@ -21,31 +31,39 @@ class ChapterController extends Controller
         return view('student.course.index', compact('student_year', 'chapters'));
     }
 
-    public function create()
+    /**
+     * Display the form for creating a new course.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function create(): View
     {
         return view('student.course.create');
     }
 
-    public function store(Request $request)
+    /**
+     * Store a new chapter and associated files based on the incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request): RedirectResponse
     {
-        $check_chapters_exist = Chapter::where('name', $request->name)->first();
+        $chapter = Chapter::firstOrNew(['name' => $request->name]);
 
-        if (! $check_chapters_exist) {
-            $chapter = Chapter::create($request->all());
-        } else {
-            $chapter = $check_chapters_exist;
+        if (! $chapter->exists) {
+            $chapter->fill($request->all())->save();
         }
 
         if ($request->hasFile('file')) {
-
             foreach ($request->file('file') as $key => $file) {
-                $destination_path = 'chapter/'.$chapter->id ?? 0 .'/';
-                $file_name = $file->getClientOriginalName();
-                $file->storeAs($destination_path, $file_name);
+                $destinationPath = "chapter/{$chapter->id}/";
+                $fileName = $file->getClientOriginalName();
+                $file->storeAs($destinationPath, $fileName);
 
                 ChapterFiles::create([
-                    'name' => $file_name,
-                    'file_dir' => $destination_path,
+                    'name' => $fileName,
+                    'file_dir' => $destinationPath,
                     'chapter_id' => $chapter->id,
                 ]);
             }
@@ -54,7 +72,14 @@ class ChapterController extends Controller
         return redirect()->route('chapter.index')->with('success', 'Chapter has been stored.');
     }
 
-    public function show(Request $request, Chapter $chapter)
+    /**
+     * Display the details of a specific chapter, including associated files, quiz, and e-notes.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Chapter  $chapter
+     * @return \Illuminate\View\View
+     */
+    public function show(Request $request, Chapter $chapter): View
     {
         $chapter_files = ChapterFiles::where('chapter_id', $chapter->id)->get();
 
@@ -65,130 +90,188 @@ class ChapterController extends Controller
         return view('student.course.show', compact('chapter', 'chapter_files', 'quiz_available', 'enotes_available'));
     }
 
-    public function preview(Request $request, Chapter $chapter)
+    /**
+     * Display a preview of the files associated with a specific chapter.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Chapter  $chapter
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function preview(Request $request, Chapter $chapter): JsonResponse
     {
-        $chapter_files = ChapterFiles::where('chapter_id', $chapter->id)->get();
+        $chapterFiles = ChapterFiles::where('chapter_id', $chapter->id)->get();
 
-        foreach ($chapter_files as $key => $chapter_file) {
-            $chapter_file->url = asset('storage/'.$chapter_file->file_dir.'/'.$chapter_file->name);
-        }
+        $chapterFiles->transform(function ($chapterFile) {
+            $chapterFile->url = asset("storage/{$chapterFile->file_dir}/{$chapterFile->name}");
 
-        return response()->json(['success' => 'Preview displayed.', 'chapter_files' => $chapter_files]);
+            return $chapterFile;
+        });
+
+        return response()->json(['success' => 'Preview displayed.', 'chapter_files' => $chapterFiles]);
     }
 
-    public function edit(Request $request, Chapter $chapter)
+    /**
+     * Display the form for editing details of a specific chapter, including associated files.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Chapter  $chapter
+     * @return \Illuminate\View\View
+     */
+    public function edit(Request $request, Chapter $chapter): View
     {
         $chapter_files = ChapterFiles::where('chapter_id', $chapter->id)->get();
 
         return view('student.course.edit', compact('chapter', 'chapter_files'));
     }
 
-    public function update(Request $request, Chapter $chapter)
+    /**
+     * Update the details of a specific chapter based on the incoming request data.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Chapter  $chapter
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, Chapter $chapter): RedirectResponse
     {
         $chapter->update($request->all());
 
         return back()->with('success', 'Chapter has been stored.');
     }
 
-    public function file(Request $request, Chapter $chapter)
+    /**
+     * Store a file associated with a specific chapter, and update associated records if necessary.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Chapter  $chapter
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function file(Request $request, Chapter $chapter): JsonResponse
     {
-        $destination_path = 'chapter/'.$chapter->id ?? 0 .'/';
-        $file_name = $request->file('file')->getClientOriginalName();
-        $request->file('file')->storeAs($destination_path, $file_name);
+        $destinationPath = "chapter/{$chapter->id}/";
+        $fileName = $request->file('file')->getClientOriginalName();
 
-        $chapter_files = ChapterFiles::where('name', $file_name)->first();
+        $request->file('file')->storeAs($destinationPath, $fileName);
 
-        if ($chapter_files) {
+        $chapterFile = ChapterFiles::firstOrNew(['name' => $fileName]);
 
-            $chapter_files->update([
-                'name' => $file_name,
-                'file_dir' => $destination_path,
-                'chapter_id' => $chapter->id,
-            ]);
-        } else {
-
-            ChapterFiles::create([
-                'name' => $file_name,
-                'file_dir' => $destination_path,
-                'chapter_id' => $chapter->id,
-            ]);
-        }
+        $chapterFile->fill([
+            'name' => $fileName,
+            'file_dir' => $destinationPath,
+            'chapter_id' => $chapter->id,
+        ])->save();
 
         if ($request->file('file')->getClientOriginalExtension() == 'pdf') {
             Enote::create([
-                'name' => $file_name,
+                'name' => $fileName,
                 'description' => '',
                 'chapter_id' => $chapter->id,
             ]);
         }
 
-        return response()->json(['success' => 'Files has been stored.']);
+        return response()->json(['success' => 'File has been stored.']);
     }
 
-    public function read_files(Request $request, Chapter $chapter)
+    /**
+     * Read and retrieve information about files associated with a specific chapter.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Chapter  $chapter
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function read_files(Request $request, Chapter $chapter): JsonResponse
     {
-        $directory = 'storage\\chapter\\'.$chapter->id ?? 0 .'\\';
-        $files_info = [];
-        $file_ext = ['png', 'jpg', 'jpeg', 'pdf'];
+        $directory = "storage/chapter/{$chapter->id}/";
+        $filesInfo = [];
+        $allowedExtensions = ['png', 'jpg', 'jpeg', 'pdf'];
 
-        if (file_exists(public_path($directory))) {
-            foreach (File::allFiles(public_path($directory)) as $file) {
-                $extension = strtolower($file->getExtension());
+        if (Storage::exists($directory)) {
+            foreach (Storage::allFiles($directory) as $file) {
+                $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 
-                if (in_array($extension, $file_ext)) {
-                    $filename = $file->getFilename();
-                    $size = $file->getSize();
-                    $sizeinMB = round($size / (1000 * 1024), 2);
+                if (in_array($extension, $allowedExtensions)) {
+                    $filename = pathinfo($file, PATHINFO_FILENAME);
+                    $size = Storage::size($file);
+                    $sizeInMB = round($size / (1000 * 1024), 2);
 
-                    if ($sizeinMB <= 2) {
-                        $files_info[] = [
+                    if ($sizeInMB <= 2) {
+                        $filesInfo[] = [
                             'name' => $filename,
                             'size' => $size,
-                            'path' => url($directory.'/'.$filename),
+                            'path' => Storage::url($file),
                         ];
                     }
                 }
             }
         }
 
-        return response()->json($files_info);
+        return response()->json($filesInfo);
     }
 
-    public function remove_files(Request $request, Chapter $chapter)
+    /**
+     * Remove a specific file associated with a chapter and delete its record.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Chapter  $chapter
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function remove_files(Request $request, Chapter $chapter): JsonResponse
     {
-        $destination_path = preg_split('#/#', $request->file_dir);
+        $destinationPath = preg_split('#/#', $request->file_dir);
+        $fileDir = $destinationPath[3] . '/' . $destinationPath[5];
 
-        $chapter_file = ChapterFiles::where('chapter_id', $chapter->id)->where('name', $request->file_name)->where('file_dir', $destination_path[3].'/'.$destination_path[5])->first();
+        $chapterFile = ChapterFiles::where('chapter_id', $chapter->id)
+            ->where('name', $request->file_name)
+            ->where('file_dir', $fileDir)
+            ->first();
 
-        if ($chapter_file) {
+        if ($chapterFile) {
+            $filePath = Storage::path("public/{$chapterFile->file_dir}/{$chapterFile->name}");
 
-            if (file_exists(storage_path('app/public/'.$chapter_file->file_dir.'/'.$chapter_file->name))) {
-
-                unlink(storage_path('app/public/'.$chapter_file->file_dir.'/'.$chapter_file->name));
+            if (Storage::exists($filePath)) {
+                Storage::delete($filePath);
             }
 
-            $chapter_file->delete();
+            $chapterFile->delete();
 
-            return response()->json(['success' => 'Files has been removed.']);
+            return response()->json(['success' => 'File has been removed.']);
         }
 
         return response()->json(['error' => 'File not found.']);
     }
 
-    public function download(Request $request, Chapter $chapter)
+    /**
+     * Create and download a ZIP archive containing files associated with a specific chapter.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Chapter  $chapter
+     * @return STS\ZipStream\ZipStream
+     */
+    public function download(Request $request, Chapter $chapter): ZipStream
     {
-        $directory = 'storage\\chapter\\'.$chapter->id ?? 0 .'\\';
+        $directory = 'storage\\chapter\\' . ($chapter->id ?? 0) . '\\';
 
-        return Zip::create(str_replace(' ', '-', $chapter->name).'.zip', File::files(public_path($directory)));
+        return ZipStreamFacade::create(str_replace(' ', '-', $chapter->name) . '.zip', File::files(public_path($directory)));
     }
 
+    /**
+     * Remove a specific chapter, including associated files, and delete its records.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Chapter  $chapter
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function remove(Request $request, Chapter $chapter)
     {
-        foreach ($chapter->chapter_files as $key => $chapter_file) {
-            if (file_exists(storage_path('app/public/'.$chapter_file->file_dir.'/'.$chapter_file->name))) {
-                unlink(storage_path('app/public/'.$chapter_file->file_dir.'/'.$chapter_file->name));
+        foreach ($chapter->chapter_files as $chapter_file) {
+            $filePath = "{$chapter_file->file_dir}/{$chapter_file->name}";
+
+            if (Storage::exists($filePath)) {
+                Storage::delete($filePath);
             }
         }
+
+        $directoryPath = "public/{$chapter->id}";
+        Storage::deleteDirectory($directoryPath);
 
         $chapter->delete();
 
