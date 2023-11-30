@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Chapter;
 use App\Models\StudentYear;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {

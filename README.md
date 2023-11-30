@@ -1,61 +1,97 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://github.com/ariff-fikri/spmath/blob/master/public/assets/images/home_banner.jpg?raw=true" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+# SPMath
 
-## About Laravel
+## Introduction
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+⚡ SPMath 🎓 – Elevate online learning with our intuitive platform! Interactive courses, real-time collaboration, and personalized progress tracking. Join us in shaping the future of education! 🌐💡 #EdTech #OnlineLearning
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Table of Contents
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Docker Compose Services](#docker-compose-services)
+- [Additional Commands](#additional-commands)
+- [License](#license)
 
-## Learning Laravel
+## Prerequisites
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Before you begin, make sure you have the following software installed on your system:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- [Docker](https://www.docker.com/get-started)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [Git](https://git-scm.com/)
 
-## Laravel Sponsors
+## Getting Started
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1. Clone this repository (if you haven't already):
 
-### Premium Partners
+    ```bash
+    git clone git@github.com:ariff-fikri/spmath.git
+    cd portfolio
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+2. Create a copy of the `.env.example` file and rename it to `.env`:
 
-## Contributing
+    ```bash
+    cp .env.example .env
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. Customize the `.env` file with your application configuration settings, such as database credentials and app key.
 
-## Code of Conduct
+4. Build and start the Docker containers:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    ```bash
+    docker compose up -d --build
+    ```
 
-## Security Vulnerabilities
+5. Run database migrations and seed the database:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ```bash
+    docker exec -ti app bash
+    php artisan migrate:fresh --seed
+    ```
+
+6. Access the app in your browser at [http://localhost:8000](http://localhost:8000).
+
+## Docker Compose Services
+
+This Docker Compose setup includes the following services:
+
+- **app**: The Laravel application container.
+- **nginx**: A web server container using Nginx to serve the Laravel app.
+- **database**: The MySQL database container.
+
+## Additional Commands
+
+- Stop the Docker containers:
+
+    ```bash
+    docker compose down
+    ```
+
+- View logs (e.g., Laravel logs):
+
+    ```bash
+    docker compose logs
+    ```
+
+- List all containers (e.g., including the stopped ones):
+
+    ```bash
+    docker ps -a
+    ```
+
+## Credits
+
+- [Ariff Fikri](https://github.com/ariff-fikri)
+
+## About Ariff Fikri
+
+Ariff Fikri is a senior web developer specialising on the Laravel framework. Visit [my website](https://ariff-fikri.com/).
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Thank you for visiting my personal portfolio!

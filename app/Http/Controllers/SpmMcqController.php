@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chapter;
-use App\Models\Quiz;
-use App\Models\SpmMcqQuestion;
 use App\Models\SpmMcq;
+use App\Models\SpmMcqQuestion;
 use Illuminate\Http\Request;
 
 class SpmMcqController extends Controller
@@ -57,13 +56,13 @@ class SpmMcqController extends Controller
         foreach ($request->question as $key => $question) {
             $quiz_question = SpmMcqQuestion::where('id', $key)->first();
 
-            $request->session()->put('quiz.question_' . $key, (object)([
+            $request->session()->put('quiz.question_'.$key, (object) ([
                 'input_answer' => $question,
                 'input_answer_label' => $quiz_question->answer_label($question, $quiz_question->id),
                 'title' => $quiz_question->title,
                 'correct_answer' => $quiz_question->correct_answer,
                 'correct_answer_label' => $quiz_question->answer_label($question, $quiz_question->id),
-                'status' => ($question == $quiz_question->correct_answer ? true : false)
+                'status' => ($question == $quiz_question->correct_answer ? true : false),
             ]));
 
             if ($question == $quiz_question->correct_answer) {
@@ -77,7 +76,7 @@ class SpmMcqController extends Controller
         $request->session()->put('total_correct_answer', $total_correct_answer);
         $request->session()->put('total_questions', $total_questions);
 
-        $quiz_result = (object)($request->session()->all());
+        $quiz_result = (object) ($request->session()->all());
 
         // dd($quiz_result);
 
@@ -97,13 +96,13 @@ class SpmMcqController extends Controller
         foreach ($request->question as $key => $question) {
             $quiz_question = SpmMcqQuestion::where('id', $key)->first();
 
-            $request->session()->put('quiz.question_' . $key, (object)([
+            $request->session()->put('quiz.question_'.$key, (object) ([
                 'input_answer' => $question,
                 'input_answer_label' => $quiz_question->answer_label($question, $quiz_question->id),
                 'title' => $quiz_question->title,
                 'correct_answer' => $quiz_question->correct_answer,
                 'correct_answer_label' => $quiz_question->answer_label($question, $quiz_question->id),
-                'status' => ($question == $quiz_question->correct_answer ? true : false)
+                'status' => ($question == $quiz_question->correct_answer ? true : false),
             ]));
 
             if ($question == $quiz_question->correct_answer) {
@@ -118,7 +117,7 @@ class SpmMcqController extends Controller
         $request->session()->put('total_questions', $total_questions);
         $request->session()->put('time', $request->time);
 
-        $quiz_result = (object)($request->session()->all());
+        $quiz_result = (object) ($request->session()->all());
 
         // dd($quiz_result);
 
