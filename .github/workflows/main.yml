@@ -1,0 +1,70 @@
+name: PHP Lint, Blade Formatter and Deploy
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+jobs:
+  pint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: shivammathur/setup-php@e6f75134d35752277f093989e72e140eaa222f35
+        with:
+          php-version: "8.1"
+      - uses: actions/checkout@v4
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Launch Pint inspection
+        run: vendor/bin/pint
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: PHP Linting (Pint)
+          skip_fetch: true
+
+  blade-formatter:
+    runs-on: ubuntu-latest
+
+    needs: pint
+
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "14"
+      - name: Install Dependencies
+        run: npm i
+      - name: Run Formatter
+        run: node_modules/.bin/blade-formatter resources/views/**/*.blade.php -w
+
+  run_pull:
+    name: run pull
+    runs-on: ubuntu-latest
+
+    needs: [pint, blade-formatter]
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+
+    steps:
+      - name: install ssh keys
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: just-a-placeholder-so-we-dont-get-errors
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+      - name: connect and pull
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
+      - name: cleanup
+        run: rm -rf ~/.ssh
