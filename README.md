@@ -28,7 +28,7 @@ Before you begin, make sure you have the following software installed on your sy
 
     ```bash
     git clone git@github.com:ariff-fikri/spmath.git
-    cd portfolio
+    cd spmath
     ```
 
 2. Create a copy of the `.env.example` file and rename it to `.env`:
@@ -94,4 +94,4 @@ Ariff Fikri is a senior web developer specialising on the Laravel framework. Vis
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Thank you for visiting my personal portfolio!
+Thank you for visiting!
